@@ -1,11 +1,10 @@
 function main (){
 	const display = document.getElementById("display");
 	const buttons = Array.from(document.getElementsByClassName("button"));
-	//const operators = ["+", "-", "/", "*"];
 	const defaultVal = 0;
 	let operands = [];
 	let display2Str = "";
-	let currOperator;
+	//let currOperator;
 	display.innerText = String(defaultVal);
 	let displayStr = display.innerText;
 	let operator = "";
@@ -18,10 +17,19 @@ function main (){
 		values.push(Number(displayStr));
 		val = handleOperator(operator, operands);
 		displayStr = String(val);
-		operands = [val];
+		if (isNaN(val)){
+			operands = [];
+			erase = true;
+		} else {
+			operands = [val];
+		};
 		return [displayStr, operands];
 	}
+
 	function handleOperator(operator, values) {
+		if (values.filter(elmt => isNaN(elmt)).length > 0){
+			return "Invalid values!";
+		}
 		switch(operator){
 		case "+":
 			outVal = values[0] + values[1];
@@ -44,17 +52,24 @@ function main (){
 		return outVal;
 	}
 
+	function resetVals() {
+		operands = [];
+		displayStr = String(defaultVal);
+		display2Str = "";
+	}
+
 	buttons.map( button => {
 		button.addEventListener("click", e => {
 			if (erase) {
 				displayStr = "";
 				erase = false;
 			};
+			console.log(`operands before: ${operands}`);
+			operands.filter(elmt => !isNaN(elmt));
+			console.log(`operands after: ${operands}`);
 			switch(e.target.innerText){
 				case "C":
-					operands = [];
-					displayStr = String(defaultVal);
-					display2Str = "";
+					resetVals();
 					break;
 				case "←":
 					if (displayStr.length == 1){
