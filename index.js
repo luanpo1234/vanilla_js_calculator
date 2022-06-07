@@ -1,4 +1,13 @@
 function main (){
+
+	const operandStrings = {
+		add : "+",
+		sub : "-",
+		div : "÷",
+		mult : "×",
+		abs : "|x|",
+		equal : "="
+	};
 	const display = document.getElementById("display");
 	const buttons = Array.from(document.getElementsByClassName("button"));
 	const defaultVal = 0;
@@ -31,19 +40,19 @@ function main (){
 			return "Invalid values!";
 		}
 		switch(operator){
-		case "+":
+		case operandStrings.add:
 			outVal = values[0] + values[1];
 			break;
-		case "-":
+		case operandStrings.sub:
 			outVal = values[0] - values[1];
 			break;
-		case "/":
+		case operandStrings.div:
 			if (Math.abs(values[1]) === 0) {
 				return "Cannot divide by zero!";
 			};
 			outVal = values[0] / values[1];
 			break;
-		case "*":
+		case operandStrings.mult:
 			outVal = values[0] * values[1];
 			break;
 		default:
@@ -78,10 +87,18 @@ function main (){
 						displayStr = displayStr.slice(0, -1);
 					}
 					break;
-				case "+":
-				case "-":
-				case "/":
-				case "*":
+				case "π":
+					displayStr === "0" ? displayStr = Math.PI : displayStr += Math.PI;
+					break;
+				case operandStrings.abs:
+					if (!isNaN(displayStr)){
+						displayStr = String(Math.abs(Number(displayStr)));
+					};
+					break;
+				case operandStrings.add:
+				case operandStrings.div:
+				case operandStrings.sub:
+				case operandStrings.mult:
 					display2Str += displayStr;
 					if(operands.length > 0){
 						let temp = solve(displayStr, operator, operands);
@@ -95,13 +112,18 @@ function main (){
 					display2Str += ` ${operator} `;
 					erase = true;
 					break;
-				case "=":
+
+				case operandStrings.equal:
 					display2Str += displayStr;
 					display2Str += " = ";
 					let temp = solve(displayStr, operator, operands);
 					displayStr = temp[0];
 					operands = [];
 					break;
+				case ".":
+					if (display.innerText.includes(".")){
+						break;
+					};
 				default:
 					//If display shows 0, replace str, else concatenate with text in e.
 					displayStr === "0" ? displayStr = e.target.innerText : displayStr += e.target.innerText;
