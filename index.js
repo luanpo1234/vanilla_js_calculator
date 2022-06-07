@@ -88,7 +88,7 @@ function main (){
 					}
 					break;
 				case "π":
-					displayStr === "0" ? displayStr = Math.PI : displayStr += Math.PI;
+					displayStr = String(Math.PI);
 					break;
 				case operandStrings.abs:
 					if (!isNaN(displayStr)){
@@ -112,10 +112,10 @@ function main (){
 					display2Str += ` ${operator} `;
 					erase = true;
 					break;
-
 				case operandStrings.equal:
 					display2Str += displayStr;
-					display2Str += " = ";
+					//display2Str += " = ";
+					display2Str = "";
 					let temp = solve(displayStr, operator, operands);
 					displayStr = temp[0];
 					operands = [];
