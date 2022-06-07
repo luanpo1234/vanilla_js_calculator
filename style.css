@@ -1,7 +1,14 @@
+body {
+	background-color: silver;
+  }
+
 .container {
 	max-width: 400px;
 	margin: 10vh auto 0 auto; 
-	box-shadow: 0px 0px 43px 17px rgba(153, 153, 153, 1);
+	border-style: solid;
+	background-color: white;
+	box-shadow: 2px 2px 2px 2px rgba(153, 153, 153, 1);
+	
 }
 
 #display {
@@ -45,8 +52,8 @@
 }
 
 #equal {
-	background-color: #5555ff;
-	color: white;
+	background-color: #d8ece9;
+	color: black;
 }
 
 .button:hover {

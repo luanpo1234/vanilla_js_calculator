@@ -6,14 +6,37 @@ function main (){
 		div : "÷",
 		mult : "×",
 		abs : "|x|",
-		equal : "="
+		equal : "=",
+		clear : "C",
+		delete : "←"
+	};
+	const validKeys = {
+		"0" : "0",
+		"1" : "1",
+		"2" : "2",
+		"3" : "3",
+		"4" : "4",
+		"5" : "5",
+		"6" : "6",
+		"7" : "7",
+		"8" : "8",
+		"9" : "9",
+		"0" : "0",
+		"." : ".",
+		"=" : operandStrings.equal,
+		"Enter" : operandStrings.equal,
+		"-" : operandStrings.sub,
+		"+" : operandStrings.add,
+		"/" : operandStrings.div,
+		"*" : operandStrings.mult,
+		"Escape" : operandStrings.clear,
+		"Backspace" : operandStrings.delete
 	};
 	const display = document.getElementById("display");
 	const buttons = Array.from(document.getElementsByClassName("button"));
 	const defaultVal = 0;
 	let operands = [];
 	let display2Str = "";
-	//let currOperator;
 	display.innerText = String(defaultVal);
 	let displayStr = display.innerText;
 	let operator = "";
@@ -22,6 +45,9 @@ function main (){
 	function solve(displayStr, operator, values) {
 		if (!operator || values.length === 0) {
 			return [displayStr, values];
+		}
+		if (displayStr != display.innerText){
+			return [display.innerText, values];
 		}
 		values.push(Number(displayStr));
 		val = handleOperator(operator, operands);
@@ -38,6 +64,9 @@ function main (){
 	function handleOperator(operator, values) {
 		if (values.filter(elmt => isNaN(elmt)).length > 0){
 			return "Invalid values!";
+		}
+		if (values.length < 2){
+			return values[0];
 		}
 		switch(operator){
 		case operandStrings.add:
@@ -67,20 +96,20 @@ function main (){
 		display2Str = "";
 	}
 
-	buttons.map( button => {
-		button.addEventListener("click", e => {
+	function handleKey(k){
+		console.log(operator);
+		//displayStr = display.innerText;
+		{
 			if (erase) {
 				displayStr = "";
 				erase = false;
-			};
-			console.log(`operands before: ${operands}`);
+			}
 			operands.filter(elmt => !isNaN(elmt));
-			console.log(`operands after: ${operands}`);
-			switch(e.target.innerText){
-				case "C":
+			switch(k){
+				case operandStrings.clear:
 					resetVals();
 					break;
-				case "←":
+				case operandStrings.delete:
 					if (displayStr.length == 1){
 						displayStr = String(defaultVal);
 					} else {
@@ -98,17 +127,17 @@ function main (){
 				case operandStrings.add:
 				case operandStrings.div:
 				case operandStrings.sub:
-				case operandStrings.mult:
+				case operandStrings.mult:				
 					display2Str += displayStr;
-					if(operands.length > 0){
+					if(operands.length === 1){
 						let temp = solve(displayStr, operator, operands);
 						displayStr = temp[0];
-						operands = temp[1];
-						console.log("should not erase");
+						operands = temp[1]
 					} else {
 						operands.push(Number(displayStr));
 					};
-					operator = e.target.innerText;
+					console.log(`Operands: ${operands}`);
+					operator = k;
 					display2Str += ` ${operator} `;
 					erase = true;
 					break;
@@ -125,16 +154,29 @@ function main (){
 						break;
 					};
 				default:
-					//If display shows 0, replace str, else concatenate with text in e.
-					displayStr === "0" ? displayStr = e.target.innerText : displayStr += e.target.innerText;
+					//If display shows 0, replace str, else concatenate with k.
+					displayStr === "0" ? displayStr = k : displayStr += k;
 					break;
 			}
 			display.innerText = displayStr;
 			display2.innerText = display2Str;
 			console.log("clicked");
-			console.log(e);
-			console.log(e.target);
-			console.log(e.target.innerText);
+		}
+	}
+
+	document.addEventListener('keydown', e => {
+		let key = e.key;
+		console.log(key);
+		if (validKeys[key]) {
+			handleKey(validKeys[key]);
+	} else {
+		console.log("Invalid key.");
+	};
+	  }, false);
+
+	buttons.map( button => {
+		button.addEventListener("click", e => {
+			handleKey(e.target.innerText);
 		});
 	});
 };
