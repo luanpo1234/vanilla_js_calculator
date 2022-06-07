@@ -146,7 +146,6 @@ function main() {
 					break;
 				case operandStrings.equal:
 					display2Str += displayStr;
-					//display2Str += " = ";
 					display2Str = "";
 					let temp = solve(displayStr, operator, operands);
 					displayStr = temp[0];
