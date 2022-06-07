@@ -30,6 +30,9 @@ function main (){
 			outVal = values[0] - values[1];
 			break;
 		case "/":
+			if (Math.abs(values[1]) === 0) {
+				return "Cannot divide by zero!";
+			};
 			outVal = values[0] / values[1];
 			break;
 		case "*":
